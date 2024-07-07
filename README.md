@@ -1,0 +1,1 @@
+# hopster-user-service
