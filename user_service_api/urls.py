@@ -1,6 +1,6 @@
 from django.urls import path, include
 from .views.google_views import google_login, google_callback
-from .views.user_nutrition_views import add_new_nutrition, get_user_meal_by_date
+from .views.user_nutrition_views import add_new_nutrition, get_user_meal_by_date, get_user_meal_week
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,
@@ -14,4 +14,5 @@ urlpatterns = [
     path('user/api/v1/google/social/auth/complete/google-oauth2/', google_callback, name='google-callback'),
     path('user/api/v1/meal/data', add_new_nutrition),
     path('user/api/v1/meal/today', get_user_meal_by_date),
+    path('user/api/v1/meal/week', get_user_meal_week),
 ]

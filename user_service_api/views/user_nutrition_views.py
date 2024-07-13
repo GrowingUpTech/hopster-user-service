@@ -38,12 +38,32 @@ def add_new_nutrition(request):
 @permission_classes([IsAuthenticated])
 def get_user_meal_by_date(request):
     username = request.data.get('username')
-    today = timezone.now().date()
+    date = request.data.get('date')
+    
+    if not date:
+        date = timezone.now().date()
+    else:
+        date = timezone.datetime.strptime(date, '%Y-%m-%d').date()
     
     user = get_object_or_404(User, username=username)
 
-    user_meals_today = UserNutrition.objects.filter(user=user.id, datetime__date=today)
+    user_meals_today = UserNutrition.objects.filter(user=user.id, datetime__date=date)
     serializer = UserNutritionSerializer(user_meals_today, many=True)
+
+    return Response(serializer.data, status=status.HTTP_200_OK)
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_user_meal_week(request):
+    username = request.data.get('username')
+    
+    user = get_object_or_404(User, username=username)
+    
+    today = timezone.now().date()
+    seven_days_ago = today - timezone.timedelta(days=7)
+    
+    user_meals_past_week = UserNutrition.objects.filter(user=user.id, datetime__date__range=[seven_days_ago, today])
+    serializer = UserNutritionSerializer(user_meals_past_week, many=True)
 
     return Response(serializer.data, status=status.HTTP_200_OK)
 
