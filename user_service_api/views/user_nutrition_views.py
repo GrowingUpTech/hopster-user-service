@@ -4,6 +4,7 @@ from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.models import User
+from django.utils import timezone
 from user_service_api.models.user_nutrition import UserNutrition
 from user_service_api.serializers.user_nutrition_serializers import UserNutritionSerializer
 
@@ -35,6 +36,14 @@ def add_new_nutrition(request):
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
-def get_user_meal_by_date():
-    pass
+def get_user_meal_by_date(request):
+    username = request.data.get('username')
+    today = timezone.now().date()
+    
+    user = get_object_or_404(User, username=username)
+
+    user_meals_today = UserNutrition.objects.filter(user=user.id, datetime__date=today)
+    serializer = UserNutritionSerializer(user_meals_today, many=True)
+
+    return Response(serializer.data, status=status.HTTP_200_OK)
 
