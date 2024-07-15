@@ -5,7 +5,7 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework_simplejwt.tokens import RefreshToken
-from .models import UserToken
+from user_service_api.models.user_token import UserToken
 import requests
 
 @api_view(['GET'])

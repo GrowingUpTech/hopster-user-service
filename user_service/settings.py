@@ -121,6 +121,10 @@ if DEBUG:
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
             'NAME': BASE_DIR / 'db.sqlite3',
+        },
+        'user_nutrition': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'user_nutrition_db.sqlite3',
         }
     }
 else:
@@ -132,7 +136,16 @@ else:
             'PASSWORD': config('DATABASE_PASSWORD', default='auth_password'),
             'HOST': config('DATABASE_HOST', default='127.0.0.1'),
             'PORT': config('DATABASE_PORT', default=3306, cast=int)
+        },
+        'user_nutrition': {
+            'ENGINE': 'django.db.backends.mysql',
+            'NAME': config('USER_NUTRITION_DATABASE_NAME', default="user_nutrition_db"),
+            'USER': config('USER_NUTRITION_DATABASE_USERNAME', default='user_nutrition_user'),
+            'PASSWORD': config('USER_NUTRITION_DATABASE_PASSWORD', default='user_nutrition_password'),
+            'HOST': config('USER_NUTRITION_DATABASE_HOST', default='127.0.0.1'),
+            'PORT': config('USER_NUTRITION_DATABASE_PORT', default=3307, cast=int)
         }
+        
     }
 
 
